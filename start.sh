@@ -10,5 +10,5 @@ php artisan config:cache
 echo "Caching routes..."
 php artisan route:cache
 
-echo "Starting server..."
-exec /usr/local/bin/start-nginx-php-fpm
+echo "Starting supervisor..."
+exec supervisord -c /etc/supervisor/conf.d/supervisord.conf
