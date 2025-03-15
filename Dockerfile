@@ -1,23 +1,40 @@
-# Imagen pública
-FROM richarvey/nginx-php-fpm:8.1
+# Usar la imagen oficial de PHP 8.1
+FROM php:8.1-fpm
 
-# Establece el directorio de trabajo
+# Instalar dependencias del sistema y herramientas necesarias
+RUN apt-get update && apt-get install -y \
+    nginx \
+    supervisor \
+    git \
+    unzip \
+    libpng-dev \
+    libonig-dev \
+    libxml2-dev \
+    && docker-php-ext-install pdo pdo_mysql mbstring exif pcntl bcmath gd
+
+# Rempver la configuración por defecto de NGINX
+RUN rm /etc/nginx/conf.d/default.conf
+
+# Copiar la configuración personalizada de NGINX desde el directorio docker/
+COPY docker/nginx.conf /etc/nginx/conf.d/
+
+# Copiar la configuración de supervisor desde el directorio docker/
+COPY docker/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+
+# Establecer el directorio de trabajo
 WORKDIR /var/www/html
 
-# Copia los archivos de Composer primero para aprovechar el cacheo de capas
-COPY composer.lock composer.json /var/www/html/
-
-# Instala las dependencias de Composer sin dependencias de desarrollo y optimiza el autoloader
-RUN composer install --no-dev --optimize-autoloader
-
-# Copia el resto del código de la aplicación
+# Copiar los archivos de la aplicación al contenedor
 COPY . /var/www/html
 
-# Ajusta los permisos para los directorios que Laravel requiere (storage y bootstrap/cache)
-RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
+# Instalar las dependencias de Composer sin dependencias de desarrollo y optimiza el autoloader
+RUN composer install --no-dev --optimize-autoloader
 
-# Expone el puerto 80
+# Ajustar los permisos necesarios para Laravel
+RUN chown -R www-data:www-data storage bootstrap/cache
+
+# Exponer el puerto 80 para HTTP
 EXPOSE 80
 
-# Inicia el supervisor (la imagen richarvey usa supervisor para ejecutar tanto NGINX como PHP-FPM)
-CMD ["supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
+# Iniciar supervisor para gestionar NGINX y PHP-FPM
+CMD ["/usr/bin/supervisord", "-n"]
