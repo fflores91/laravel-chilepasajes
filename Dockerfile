@@ -1,24 +1,23 @@
-# Usar la imagen base de Render con NGINX y PHP-FPM
-FROM ghcr.io/render-examples/nginx-php-fpm:latest
+# Imagen pública
+FROM richarvey/nginx-php-fpm:8.1
 
-# Establecer el directorio de trabajo
+# Establece el directorio de trabajo
 WORKDIR /var/www/html
 
-# Copiar todos los archivos de la aplicación
-COPY . .
+# Copia los archivos de Composer primero para aprovechar el cacheo de capas
+COPY composer.lock composer.json /var/www/html/
 
-# Instalar dependencias de Composer
+# Instala las dependencias de Composer sin dependencias de desarrollo y optimiza el autoloader
 RUN composer install --no-dev --optimize-autoloader
 
-# Ajustar permisos para storage y bootstrap/cache
-RUN chown -R www-data:www-data storage bootstrap/cache
+# Copia el resto del código de la aplicación
+COPY . /var/www/html
 
-# Exponer el puerto 80
+# Ajusta los permisos para los directorios que Laravel requiere (storage y bootstrap/cache)
+RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
+
+# Expone el puerto 80
 EXPOSE 80
 
-# Copiar el script de despliegue a la raíz de la imagen
-COPY start.sh /start.sh
-RUN chmod +x /start.sh
-
-# El comando de inicio ejecuta el script de despliegue
-CMD ["/start.sh"]
+# Inicia el supervisor (la imagen richarvey usa supervisor para ejecutar tanto NGINX como PHP-FPM)
+CMD ["supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
