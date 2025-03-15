@@ -13,7 +13,7 @@ RUN apt-get update && apt-get install -y \
     && docker-php-ext-install pdo pdo_mysql mbstring exif pcntl bcmath gd
 
 # Rempver la configuración por defecto de NGINX
-RUN rm /etc/nginx/conf.d/default.conf
+RUN rm -f /etc/nginx/conf.d/default.conf
 
 # Copiar la configuración personalizada de NGINX desde el directorio docker/
 COPY docker/nginx.conf /etc/nginx/conf.d/
