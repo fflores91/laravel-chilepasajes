@@ -1,0 +1,115 @@
+{
+    "info": {
+      "name": "Chilepasajes API Collection",
+      "_postman_id": "d88f1e27-9c4f-4ddf-a0ee-1f4b2f2e9b2d",
+      "description": "Colección de consultas para el proyecto de desafío técnico para Chilepasajes",
+      "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+      {
+        "name": "GET Instruments",
+        "request": {
+          "method": "GET",
+          "header": [],
+          "url": {
+            "raw": "http://127.0.0.1:8000/api/instruments",
+            "protocol": "http",
+            "host": [
+              "127",
+              "0",
+              "0",
+              "1"
+            ],
+            "port": "8000",
+            "path": [
+              "api",
+              "instruments"
+            ]
+          }
+        },
+        "response": []
+      },
+      {
+        "name": "GET Activities",
+        "request": {
+          "method": "GET",
+          "header": [],
+          "url": {
+            "raw": "http://127.0.0.1:8000/api/activities",
+            "protocol": "http",
+            "host": [
+              "127",
+              "0",
+              "0",
+              "1"
+            ],
+            "port": "8000",
+            "path": [
+              "api",
+              "activities"
+            ]
+          }
+        },
+        "response": []
+      },
+      {
+        "name": "GET Instruments Usage",
+        "request": {
+          "method": "GET",
+          "header": [],
+          "url": {
+            "raw": "http://127.0.0.1:8000/api/instruments/usage",
+            "protocol": "http",
+            "host": [
+              "127",
+              "0",
+              "0",
+              "1"
+            ],
+            "port": "8000",
+            "path": [
+              "api",
+              "instruments",
+              "usage"
+            ]
+          }
+        },
+        "response": []
+      },
+      {
+        "name": "POST Instrument Usage (Specific)",
+        "request": {
+          "method": "POST",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json",
+              "type": "text"
+            }
+          ],
+          "body": {
+            "mode": "raw",
+            "raw": "{\n    \"instrument\": \"SOHO: LASCO/C2\"\n}"
+          },
+          "url": {
+            "raw": "http://127.0.0.1:8000/api/instruments/usage",
+            "protocol": "http",
+            "host": [
+              "127",
+              "0",
+              "0",
+              "1"
+            ],
+            "port": "8000",
+            "path": [
+              "api",
+              "instruments",
+              "usage"
+            ]
+          }
+        },
+        "response": []
+      }
+    ]
+  }
+  
