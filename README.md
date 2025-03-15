@@ -14,4 +14,30 @@ La solución sigue una arquitectura limpia y los principios SOLID, utilizando:
 - Composer
 - Laravel 12.x
 - Git y una cuenta en GitHub
-- (Opcional) Postman para probar los endpoints
+- (Opcional) Postman u otro servicio como Insomnia para probar los endpoints
+
+## Instalación
+
+1. **Clonar el repositorio** (o descargar el código fuente):
+   ```bash
+   git clone https://github.com/fflores91/laravel-chilepasajes.git
+   cd laravel-chilepasajes
+   ```
+2. **Instalar dependencias**: 
+    ```bash
+    composer install
+    ```
+3. **Configurar el entorno**:
+    - Copiar el archivo `.env.example` a `.env`
+    - Abrir el archivo .env y configurar la variable `NASA_API_KEY`, por ejemplo: 
+    ```bash
+    NASA_API_KEY=ukAfziyZthbSMl9RbVd7KlkhHMu1y0J0l4o8W0MC
+    ```
+    - Generar la clave de la aplicación:
+    ```bash 
+    php artisan key:generate
+    ```
+4. **Ajustar el rango de fechas** (opcional):
+
+    El servicio utiliza por defecto el rango de fechas sugeridos 2016-03-01 a 2016-03-31 para capturar eventos históricos que incluyan, por ejemplo, el instrumento `"MODEL: SWMF"` y actividades como `"IPS-001"`, `"HSS-001"` o `"GST-001"`.
+    Puedes modificar estas fechas en `app/Services/NasaDonkiService.php` según lo que necesites.
